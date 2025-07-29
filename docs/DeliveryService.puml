@@ -1,0 +1,44 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+
+' ==== INTERFACE ====
+interface DeliveryService {
+  + List<UUID> listReadyForDelivery()
+  + void deliverOrder(UUID)
+}
+
+' ==== CLASS ====
+class DeliveryServiceImpl {
+  - chefService : ChefService
+  - orderService : OrderService
+  - pancakeAssemblyService : PancakeAssemblyService
+  - orderLogService : OrderLogService
+  --
+  + List<UUID> listReadyForDelivery()
+  + void deliverOrder(UUID)
+}
+
+' ==== DEPENDENCIES ====
+interface ChefService
+interface OrderService
+interface PancakeAssemblyService
+interface OrderLogService
+
+class PancakeView
+class Order
+
+' ==== RELATIONS ====
+DeliveryServiceImpl ..|> DeliveryService
+DeliveryServiceImpl --> ChefService
+DeliveryServiceImpl --> OrderService
+DeliveryServiceImpl --> PancakeAssemblyService
+DeliveryServiceImpl --> OrderLogService
+DeliveryServiceImpl --> PancakeView : uses
+DeliveryServiceImpl --> Order : uses
+
+@enduml

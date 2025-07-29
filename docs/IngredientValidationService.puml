@@ -1,0 +1,44 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+
+' ==== INTERFACES ====
+interface IngredientCompatibilityRules {
+  + Set<Ingredient> getIncompatibleWith(Ingredient)
+}
+
+interface IngredientValidationService {
+  + void validateIngredientCombination(Pancake.Builder, Ingredient)
+}
+
+' ==== IMPLEMENTATIONS ====
+class IngredientCompatibilityRulesImpl <<thread-safe>> {
+  - RULES : Map<Ingredient, Set<Ingredient>> <<static, final>>
+  --
+  + Set<Ingredient> getIncompatibleWith(Ingredient)
+}
+
+class IngredientValidationServiceImpl <<thread-safe>> {
+  - compatibilityRules : IngredientCompatibilityRules
+  --
+  + void validateIngredientCombination(Pancake.Builder, Ingredient)
+}
+
+' ==== TYPES ====
+class PancakeBuilder
+class Ingredient
+
+' ==== RELATIONSHIPS ====
+IngredientCompatibilityRulesImpl ..|> IngredientCompatibilityRules
+IngredientValidationServiceImpl ..|> IngredientValidationService
+
+IngredientValidationServiceImpl --> IngredientCompatibilityRules
+IngredientValidationServiceImpl --> PancakeBuilder : uses
+IngredientValidationServiceImpl --> Ingredient : uses
+IngredientCompatibilityRulesImpl --> Ingredient : uses
+
+@enduml

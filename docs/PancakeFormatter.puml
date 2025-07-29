@@ -1,0 +1,24 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+
+' ==== CLASS ====
+class PancakeFormatter <<thread-safe>> {
+  - PancakeFormatter() <<private>>
+  --
+  + static String getDescription(Pancake)
+}
+
+' ==== TYPES USED ====
+class Pancake
+enum Ingredient
+
+' ==== RELATIONSHIPS ====
+PancakeFormatter --> Pancake : uses
+PancakeFormatter --> Ingredient : reads
+
+@enduml

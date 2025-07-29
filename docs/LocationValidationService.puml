@@ -1,0 +1,32 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+
+' ==== INTERFACE ====
+interface LocationValidationService {
+  + void validateLocationInput(String, int)
+}
+
+' ==== IMPLEMENTATION ====
+class LocationValidationServiceImpl <<thread-safe>> {
+  - validationRules : Map<String, IntRange> <<static, final>>
+  --
+  + void validateLocationInput(String, int)
+}
+
+' ==== NESTED RECORD ====
+record IntRange {
+  + min : int
+  + max : int
+  + boolean contains(int)
+}
+
+' ==== RELATIONSHIPS ====
+LocationValidationServiceImpl ..|> LocationValidationService
+LocationValidationServiceImpl --> IntRange : uses
+
+@enduml

@@ -1,0 +1,48 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+
+' ==== INTERFACE ====
+interface PancakeAssemblyService {
+  + UUID startNewPancake(UUID)
+  + void addIngredient(UUID, Ingredient)
+  + void finalizePancake(UUID)
+  + List<PancakeView> listPancakes(UUID)
+  + void removePancake(UUID)
+  + void removePancakesByOrderId(UUID)
+}
+
+' ==== IMPLEMENTATION ====
+class PancakeAssemblyServiceImpl {
+  - draftPancakes : ConcurrentHashMap<UUID, Pancake.Builder>
+  - completedPancakes : ConcurrentHashMap<UUID, List<Pancake>>
+  - pancakeToOrderMap : ConcurrentHashMap<UUID, UUID>
+  --
+  - ingredientValidationService : IngredientValidationService
+  - orderLogService : OrderLogService
+  - orderLookupService : OrderLookupService
+  - orderValidationService : OrderValidationService
+}
+
+' ==== DEPENDENCIES ====
+interface IngredientValidationService
+interface OrderLookupService
+interface OrderLogService
+interface OrderValidationService
+
+class PancakeBuilder
+
+' ==== RELATIONSHIPS ====
+PancakeAssemblyServiceImpl ..|> PancakeAssemblyService
+PancakeAssemblyServiceImpl --> PancakeBuilder : uses
+PancakeAssemblyServiceImpl --> PancakeView : returns
+PancakeAssemblyServiceImpl --> IngredientValidationService
+PancakeAssemblyServiceImpl --> OrderLookupService
+PancakeAssemblyServiceImpl --> OrderLogService
+PancakeAssemblyServiceImpl --> OrderValidationService
+
+@enduml

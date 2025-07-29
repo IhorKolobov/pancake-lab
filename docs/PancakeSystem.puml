@@ -1,0 +1,127 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+
+
+interface ChefService
+interface DeliveryService
+interface IngredientCompatibilityRules
+interface IngredientValidationService
+interface LocationValidationService
+interface OrderLogService
+interface OrderLookupService
+interface OrderService
+interface OrderValidationService
+interface PancakeAssemblyService
+class ChefServiceImpl
+class DeliveryServiceImpl
+class IngredientCompatibilityRulesImpl
+class IngredientValidationServiceImpl
+class InvalidAddressException
+class InvalidOrderStateException
+class InvalidPancakeOperationException
+class LocationValidationServiceImpl
+class Main
+class NoPancakesFoundException
+class Order
+class OrderFactory
+class OrderLogServiceImpl
+class OrderLookupServiceImpl
+class OrderNotFoundException
+class OrderNotReadyForDeliveryException
+class OrderServiceImpl
+class OrderStoreNotThreadSafeException
+class OrderValidationServiceImpl
+class Pancake
+class PancakeAssemblyServiceImpl
+class PancakeFlowIntegrationTest
+class PancakeFormatter
+class PancakeNotFoundException
+enum Ingredient
+enum OrderStatus
+class IntRange <<record>>
+class InvalidAddressException <<exception>>
+class InvalidOrderStateException <<exception>>
+class InvalidPancakeOperationException <<exception>>
+class NoPancakesFoundException <<exception>>
+class OrderNotFoundException <<exception>>
+class OrderNotReadyForDeliveryException <<exception>>
+class OrderStoreNotThreadSafeException <<exception>>
+class PancakeNotFoundException <<exception>>
+PancakeFlowIntegrationTest ..> OrderLogService : uses
+PancakeFlowIntegrationTest ..> Ingredient : uses
+PancakeFlowIntegrationTest ..> PancakeAssemblyService : uses
+PancakeFlowIntegrationTest ..> Pancake : uses
+PancakeFlowIntegrationTest ..> DeliveryService : uses
+PancakeFlowIntegrationTest ..> ChefService : uses
+PancakeFlowIntegrationTest ..> OrderView : uses
+PancakeFlowIntegrationTest ..> OrderStatus : uses
+PancakeFlowIntegrationTest ..> OrderService : uses
+PancakeFormatter ..> Ingredient : uses
+PancakeFormatter ..> Pancake : uses
+Pancake ..> Ingredient : uses
+Pancake ..> Pancake : uses
+Order ..> OrderStatus : uses
+Order ..> Order : uses
+OrderFactory ..> OrderStatus : uses
+OrderFactory ..> Order : uses
+IngredientCompatibilityRulesImpl ..> Ingredient : uses
+IngredientCompatibilityRulesImpl ..|> IngredientCompatibilityRules : implements
+OrderServiceImpl --> OrderLogService : injects
+OrderServiceImpl --> PancakeAssemblyService : injects
+OrderServiceImpl ..> OrderStatus : uses
+OrderServiceImpl ..> Pancake : uses
+OrderServiceImpl ..|> OrderService : implements
+OrderServiceImpl ..> Order : uses
+OrderServiceImpl --> LocationValidationService : injects
+OrderServiceImpl --> OrderValidationService : injects
+OrderLookupServiceImpl ..|> OrderLookupService : implements
+OrderLookupServiceImpl ..> Order : uses
+ChefServiceImpl --> OrderService : injects
+ChefServiceImpl --> OrderLogService : injects
+ChefServiceImpl --> PancakeAssemblyService : injects
+ChefServiceImpl ..|> ChefService : implements
+ChefServiceImpl ..> Pancake : uses
+ChefServiceImpl ..> Order : uses
+ChefServiceImpl --> OrderValidationService : injects
+PancakeAssemblyServiceImpl ..|> PancakeAssemblyService : implements
+PancakeAssemblyServiceImpl ..> Ingredient : uses
+PancakeAssemblyServiceImpl --> OrderLogService : injects
+PancakeAssemblyServiceImpl --> OrderLookupService : injects
+PancakeAssemblyServiceImpl ..> Pancake : uses
+PancakeAssemblyServiceImpl ..> Order : uses
+PancakeAssemblyServiceImpl --> IngredientValidationService : injects
+PancakeAssemblyServiceImpl --> OrderValidationService : injects
+DeliveryServiceImpl --> OrderService : injects
+DeliveryServiceImpl --> OrderLogService : injects
+DeliveryServiceImpl --> PancakeAssemblyService : injects
+DeliveryServiceImpl ..|> DeliveryService : implements
+DeliveryServiceImpl ..> Pancake : uses
+DeliveryServiceImpl ..> Order : uses
+DeliveryServiceImpl --> ChefService : injects
+OrderLogServiceImpl ..|> OrderLogService : implements
+OrderLogServiceImpl ..> Order : uses
+LocationValidationServiceImpl ..|> LocationValidationService : implements
+LocationValidationServiceImpl ..> IntRange : uses
+IngredientValidationServiceImpl ..> Ingredient : uses
+IngredientValidationServiceImpl ..|> IngredientValidationService : implements
+IngredientValidationServiceImpl --> IngredientCompatibilityRules : injects
+IngredientValidationServiceImpl ..> Pancake : uses
+OrderValidationServiceImpl ..|> OrderValidationService : implements
+OrderValidationServiceImpl ..> OrderStatus : uses
+OrderValidationServiceImpl ..> Order : uses
+OrderServiceImpl --> OrderStoreNotThreadSafeException : throws
+OrderLookupServiceImpl --> OrderStoreNotThreadSafeException : throws
+ChefServiceImpl --> NoPancakesFoundException : throws
+PancakeAssemblyServiceImpl --> PancakeNotFoundException : throws
+DeliveryServiceImpl --> OrderNotReadyForDeliveryException : throws
+OrderServiceImpl --> OrderNotFoundException : throws
+LocationValidationServiceImpl --> InvalidAddressException : throws
+IngredientValidationServiceImpl --> InvalidPancakeOperationException : throws
+OrderValidationServiceImpl --> InvalidOrderStateException : throws
+
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+
+' ==== INTERFACE ====
+interface OrderValidationService {
+  + void ensureModifiable(Order)
+  + void ensureReadyForPreparation(Order)
+}
+
+' ==== IMPLEMENTATION ====
+class OrderValidationServiceImpl <<thread-safe>> {
+}
+
+' ==== TYPES USED ====
+class Order
+enum OrderStatus
+class InvalidOrderStateException <<exception>>
+
+' ==== RELATIONSHIPS ====
+OrderValidationServiceImpl ..|> OrderValidationService
+OrderValidationServiceImpl --> Order : reads
+OrderValidationServiceImpl --> OrderStatus : uses
+OrderValidationServiceImpl --> InvalidOrderStateException : throws
+
+@enduml

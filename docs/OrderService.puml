@@ -1,0 +1,57 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+
+' ==== INTERFACE ====
+interface OrderService {
+  + UUID createOrder(int, int)
+  + void cancelOrder(UUID)
+  + void completeOrder(UUID)
+  + Optional<OrderView> findOrder(UUID)
+  + void deleteOrder(UUID)
+}
+
+' ==== IMPLEMENTATION ====
+class OrderServiceImpl <<thread-safe>> {
+  - orders : ConcurrentMap<UUID, Order>
+  --
+  - locationValidationService : LocationValidationService
+  - orderValidationService : OrderValidationService
+  - orderLogService : OrderLogService
+  - pancakeAssemblyService : PancakeAssemblyService
+  --
+  + createOrder(int, int) : UUID
+  + cancelOrder(UUID) : void
+  + completeOrder(UUID) : void
+  + findOrder(UUID) : Optional<OrderView>
+  + deleteOrder(UUID) : void
+}
+
+' ==== EXCEPTION ====
+class OrderStoreNotThreadSafeException <<exception>>
+
+' ==== TYPES USED ====
+class Order
+class OrderView
+enum OrderStatus
+interface LocationValidationService
+interface OrderValidationService
+interface OrderLogService
+interface PancakeAssemblyService
+
+' ==== RELATIONSHIPS ====
+OrderServiceImpl ..|> OrderService
+OrderServiceImpl --> OrderStoreNotThreadSafeException : throws
+OrderServiceImpl --> Order : manages
+OrderServiceImpl --> OrderView : returns
+OrderServiceImpl --> OrderStatus : uses
+OrderServiceImpl --> LocationValidationService
+OrderServiceImpl --> OrderValidationService
+OrderServiceImpl --> OrderLogService
+OrderServiceImpl --> PancakeAssemblyService
+
+@enduml

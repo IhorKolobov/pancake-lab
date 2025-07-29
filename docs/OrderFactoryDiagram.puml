@@ -1,0 +1,53 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+
+' ==== Immutable Order ====
+class Order <<immutable>> {
+    - UUID id
+    - int building
+    - int room
+    - OrderStatus status
+    --
+    + UUID getId()
+    + int getBuilding()
+    + int getRoom()
+    + OrderStatus getStatus()
+    + Order withStatus(OrderStatus)
+}
+
+note right of Order
+Immutable:
+- all fields are final
+- no setters
+- withStatus() returns new object
+Thread-safe by design
+end note
+
+' ==== Enum ====
+enum OrderStatus {
+    CREATED
+    CANCELLED
+    COMPLETED
+}
+
+' ==== Factory class ====
+class OrderFactory <<factory>> {
+    + static Order create(int building, int room)
+}
+
+note right of OrderFactory
+Utility class (static only)
+Cannot be instantiated
+Thread-safe
+end note
+
+' ==== Relationships ====
+Order --> OrderStatus : uses
+OrderFactory --> Order : creates
+
+@enduml

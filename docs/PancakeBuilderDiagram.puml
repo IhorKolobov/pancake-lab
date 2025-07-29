@@ -1,0 +1,56 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor White
+    ArrowColor Black
+    BorderColor Black
+}
+
+' ==== IMMUTABLE Pancake ====
+class Pancake <<immutable>> {
+    - UUID id
+    - UUID orderId
+    - List<Ingredient> ingredients
+    --
+    + UUID getId()
+    + UUID getOrderId()
+    + List<Ingredient> getIngredients()
+    + String description()
+}
+
+' ==== Thread-safe Builder ====
+class PancakeBuilder <<builder>> {
+    - UUID id
+    - UUID orderId
+    - List<Ingredient> ingredients
+    --
+    + PancakeBuilder(UUID orderId)
+    + PancakeBuilder addIngredient(Ingredient)
+    + Pancake build()
+    + UUID getId()
+    + UUID getOrderId()
+    + List<Ingredient> getIngredients()
+}
+
+note right of PancakeBuilder
+Thread-safe:
+- synchronized addIngredient()
+- synchronized build()
+- synchronized getIngredients()
+end note
+
+' ==== Ingredient enum ====
+enum Ingredient {
+    DARK_CHOCOLATE
+    MILK_CHOCOLATE
+    WHIPPED_CREAM
+    HAZELNUTS
+    MUSTARD
+}
+
+' ==== Associations ====
+PancakeBuilder --> Pancake : builds
+Pancake --> Ingredient : uses
+PancakeBuilder --> Ingredient : adds
+
+@enduml

@@ -1,0 +1,42 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+
+' ==== Interface ====
+interface OrderLogService {
+  + void logCreateOrder(Order)
+  + void logCancelOrder(Order, int)
+  + void logCompleteOrder(Order)
+  + void logAddPancake(Order, String, int)
+  + void logRemovePancake(Order, String, int, int)
+  + void logPrepareOrder(Order, int)
+  + void logDeliverOrder(Order, int)
+  + List<String> getLogs()
+}
+
+' ==== Implementation ====
+class OrderLogServiceImpl <<thread-safe>> {
+  - logs : ConcurrentLinkedQueue<String>
+  --
+  + void logCreateOrder(Order)
+  + void logCancelOrder(Order, int)
+  + void logCompleteOrder(Order)
+  + void logAddPancake(Order, String, int)
+  + void logRemovePancake(Order, String, int, int)
+  + void logPrepareOrder(Order, int)
+  + void logDeliverOrder(Order, int)
+  + List<String> getLogs()
+}
+
+' ==== Dependencies ====
+class Order
+
+' ==== Relationships ====
+OrderLogServiceImpl ..|> OrderLogService
+OrderLogServiceImpl --> Order : uses
+
+@enduml

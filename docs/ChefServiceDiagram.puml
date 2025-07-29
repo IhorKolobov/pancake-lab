@@ -1,0 +1,44 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+
+' ==== INTERFACE ====
+interface ChefService {
+  + void prepareOrder(UUID)
+  + List<UUID> listPreparedOrders()
+  + void pickupPreparedOrder(UUID)
+  + Optional<List<PancakeView>> takePreparedOrder(UUID orderId)
+}
+
+' ==== CLASS ====
+class ChefServiceImpl {
+  - preparedOrders : ConcurrentHashMap<UUID, List<PancakeView>>
+  --
+  - orderService : OrderService
+  - pancakeAssemblyService : PancakeAssemblyService
+  - orderValidationService : OrderValidationService
+  - orderLogService : OrderLogService
+}
+
+' ==== DEPENDENCIES ====
+interface OrderService
+interface PancakeAssemblyService
+interface OrderValidationService
+interface OrderLogService
+
+class PancakeView
+class Order
+
+ChefServiceImpl ..|> ChefService
+ChefServiceImpl --> PancakeAssemblyService
+ChefServiceImpl --> OrderService
+ChefServiceImpl --> OrderValidationService
+ChefServiceImpl --> OrderLogService
+ChefServiceImpl --> PancakeView : uses
+ChefServiceImpl --> Order : uses
+
+@enduml

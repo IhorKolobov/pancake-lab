@@ -1,0 +1,34 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+
+' ==== INTERFACE ====
+interface OrderLookupService {
+  + Optional<Order> findOrder(UUID)
+}
+
+' ==== IMPLEMENTATION ====
+class OrderLookupServiceImpl <<thread-safe>> {
+  - orderStore : Map<UUID, Order>
+  --
+  + Optional<Order> findOrder(UUID)
+}
+
+' ==== EXCEPTION ====
+class OrderStoreNotThreadSafeException <<exception>>
+
+' ==== TYPES USED ====
+class Order
+class UUID
+
+' ==== RELATIONSHIPS ====
+OrderLookupServiceImpl ..|> OrderLookupService
+OrderLookupServiceImpl --> OrderStoreNotThreadSafeException : throws
+OrderLookupServiceImpl --> Order : uses
+OrderLookupServiceImpl --> UUID : uses
+
+@enduml
