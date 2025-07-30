@@ -47,11 +47,16 @@ The following decisions were made to ensure maintainability, performance, and sa
 - The system uses Optional with orElseThrow(...) and custom exception types to make error handling explicit and meaningful.
 - Data transfer objects and models are immutable. All lists returned are unmodifiable copies to avoid accidental mutation.
 - Ingredient validation logic is handled in its own service, which can easily be extended or replaced.
+- Internal domain objects like Order and Pancake are never exposed through public APIs. Instead, the system uses `OrderView` and `PancakeView` interfaces to represent safe, read-only projections.
 
 - The application logic was guided and validated through a comprehensive `PancakeFlowIntegrationTest`,
   which acted as a high-level safety net throughout development.
   This allowed us to follow a behavior-first approach similar to Test-Driven Development (TDD) at the integration level.  
   Given the constraint of using pure Java without any external libraries like Mockito, this approach provided the most pragmatic and reliable way to verify system correctness.
+
+- To further verify correctness under concurrent usage, a dedicated `ConcurrentStressTest` was introduced.  
+  It simulates high-load, multi-threaded scenarios involving multiple order lifecycles running in parallel,  
+  ensuring the application remains race-condition free and stable under pressure.
 
 
 These decisions help make the system easier to test, extend, and run safely in a multi-threaded environment.
@@ -75,7 +80,6 @@ The following flow is fully tested in `PancakeFlowIntegrationTest`:
 - Chef prepares the order
 - Delivery service delivers it and cleans up
 
-
 ## Error Handling
 The system defines clear exception types for:
 
@@ -84,7 +88,6 @@ The system defines clear exception types for:
 - Invalid pancake operations (`InvalidPancakeOperationException`)
 - Invalid location input (`InvalidAddressException`)
 - Unsafe storage injection (`OrderStoreNotThreadSafeException`)
-
 
 ## Technologies Used
 - Java 17
