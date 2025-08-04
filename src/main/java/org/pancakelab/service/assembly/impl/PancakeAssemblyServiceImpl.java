@@ -72,6 +72,7 @@ public final class PancakeAssemblyServiceImpl implements PancakeAssemblyService 
         });
     }
 
+    @Override
     public void finalizePancake(UUID pancakeId) {
         Pancake.Builder builder = draftPancakes.remove(pancakeId);
         ensureBuilderExists(pancakeId, builder);

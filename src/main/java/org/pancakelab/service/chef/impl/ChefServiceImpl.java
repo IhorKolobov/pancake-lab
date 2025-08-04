@@ -4,7 +4,6 @@ import org.pancakelab.api.view.pancake.PancakeView;
 import org.pancakelab.exception.NoPancakesFoundException;
 import org.pancakelab.exception.OrderNotFoundException;
 import org.pancakelab.model.order.Order;
-import org.pancakelab.model.pancake.Pancake;
 import org.pancakelab.service.assembly.PancakeAssemblyService;
 import org.pancakelab.service.chef.ChefService;
 import org.pancakelab.service.logging.OrderLogService;

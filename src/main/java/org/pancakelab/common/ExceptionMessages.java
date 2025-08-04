@@ -17,4 +17,5 @@ public final class ExceptionMessages {
     public static final String ORDER_NOT_READY_FOR_PREPARATION = "Order must be COMPLETED before it can be prepared.";
     public static final String THREAD_SAFE_ERROR_MSG = "Order store must be a thread-safe map (e.g. ConcurrentHashMap)";
     public static final String INVALID_COMPLETED_LIST_TYPE = "Expected CopyOnWriteArrayList for completedPancakes[%s], but got: %s";
+    public static final String ORDER_FACTORY_SHOULD_NOT_BE_INSTANTIATED = "OrderFactory should not be instantiated.";
 }

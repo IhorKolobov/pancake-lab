@@ -32,10 +32,6 @@ public final class Order {
         return status;
     }
 
-    public boolean isActive() {
-        return status == OrderStatus.CREATED;
-    }
-
     public Order withStatus(OrderStatus newStatus) {
         return new Order(id, building, room, newStatus);
     }
